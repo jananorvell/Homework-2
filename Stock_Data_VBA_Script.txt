@@ -1,0 +1,56 @@
+Sub StockData()
+
+' Loop through sheets
+For Each ws In Worksheets
+
+' Find last row in current worksheet
+lastrow = ws.Cells(Rows.Count, "A").End(xlUp).Row
+
+' Set variable for holding ticker name
+Dim ticker_name As String
+
+' Set variable for holding total volume
+Dim volume_total As String
+volume_total = 0
+
+' Keep track of all ticker types in summary table
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+ ' Loop through all stock info
+ For r = 2 To lastrow
+
+  ' Check if ticker is still the same type. If not..
+  If Cells(r + 1, 1).Value <> Cells(r, 1).Value Then
+  
+   ' Set the ticker name
+   ticker_name = Cells(r, 1).Value
+  
+   ' Add to total volume
+   volume_total = volume_total + Cells(r, 7).Value
+  
+   ' Print the ticker name in the Summary Table
+   Range("I" & Summary_Table_Row).Value = ticker_name
+  
+   ' Print the total volume in the Summary Table
+   Range("J" & Summary_Table_Row).Value = volume_total
+  
+   ' Add one to the Summary Table row
+   Summary_Table_Row = Summary_Table_Row + 1
+  
+   ' Reset the total volume
+   volume_total = 0
+  
+   ' If the cell immediately following a row is the same ticker
+   Else
+
+   ' Add to the total volume
+   volume_total = volume_total + Cells(r, 7).Value
+ 
+   End If
+ 
+  Next r
+
+ Next ws
+
+End Sub
